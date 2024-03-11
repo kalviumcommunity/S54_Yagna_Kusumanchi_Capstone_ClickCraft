@@ -17,16 +17,17 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { useContext, useEffect } from 'react';
 import { AppContext } from '../../context/ParentContext';
 
-const navLinks = [
-    { name: 'Home', path: '/', status: true },
-    { name: 'Portfolios', path: '/portfolios', status: false },
-    { name: 'Community', path: '/community', status: false },
-];
 
-export default function Navbar() {
+
+export default function Navbar({tab}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { loginWithRedirect, isAuthenticated, user, logout } = useContext(AppContext)
+    const navLinks = [
+        { name: 'Home', path: '/', status: tab=="Home" },
+        { name: 'Portfolios', path: '/portfolios', status: tab=="Portfolios" },
+        { name: 'Community', path: '/community', status: tab=="Community" },
+    ]
 
     useEffect(() => {
         // console.log(user, isAuthenticated)

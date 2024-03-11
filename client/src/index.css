@@ -37,3 +37,7 @@ html::-webkit-scrollbar-track{
 html::-webkit-scrollbar-thumb{
   background: var(--primary);
 }
+
+option{
+  background-color: #010314;
+}
