@@ -5,6 +5,8 @@ import ParentContext from './context/ParentContext';
 import Auth from './Components/Auth/Auth';
 import Home from './Components/Home/Home';
 import Portfolios from './Components/Portfolios/Portfolios';
+import Community from './Components/Community/Community';
+import YourProfile from './Components/Profile.jsx/YourProfile';
 
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='/portfolios' element={<Portfolios/>} />
+            <Route path='/community' element={<Community/>} />
+            <Route path='/profile' element={<YourProfile/>} />
           </Routes>
         </BrowserRouter>
         <ParentContext />

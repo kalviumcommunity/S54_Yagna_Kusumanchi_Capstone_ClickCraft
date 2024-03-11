@@ -12,6 +12,8 @@ import {
     Avatar
 } from '@chakra-ui/react';
 
+import { Link as Ln } from "react-router-dom";
+
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineClose } from 'react-icons/ai';
 import { useContext, useEffect } from 'react';
@@ -19,14 +21,14 @@ import { AppContext } from '../../context/ParentContext';
 
 
 
-export default function Navbar({tab}) {
+export default function Navbar({ tab }) {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const { loginWithRedirect, isAuthenticated, user, logout } = useContext(AppContext)
     const navLinks = [
-        { name: 'Home', path: '/', status: tab=="Home" },
-        { name: 'Portfolios', path: '/portfolios', status: tab=="Portfolios" },
-        { name: 'Community', path: '/community', status: tab=="Community" },
+        { name: 'Home', path: '/', status: tab == "Home" },
+        { name: 'Portfolios', path: '/portfolios', status: tab == "Portfolios" },
+        { name: 'Community', path: '/community', status: tab == "Community" },
     ]
 
     useEffect(() => {
@@ -52,13 +54,15 @@ export default function Navbar({tab}) {
                 {isAuthenticated ?
 
                     <Box display={"flex"} gap={4} alignItems="center">
-                        <Avatar
-                            href="#"
-                            as={Link}
-                            border="3px solid #7241FF"
-                            rounded="full"
-                            src={user.picture}
-                        />
+                        <Ln to={"/profile"}>
+                            <Avatar
+                                as={Link}
+                                border="3px solid #7241FF"
+                                rounded="full"
+                                src={user.picture}
+                            />
+                        </Ln>
+
                         <Button bg="#010314"
                             size="md"
                             color="white"
@@ -135,21 +139,25 @@ export default function Navbar({tab}) {
 
 const NavLink = ({ name, path, onClose, status }) => {
     return (
-        <Link
-            href={path}
-            lineHeight="inherit"
-            _hover={{
-                textDecoration: 'none',
-                color: "#865BFF",
-                transform: 'scale(1.05)',
-                fontWeight: "700"
-            }}
-            onClick={() => onClose()}
-            color={status ? "#865BFF" : "#77798F"}
-            fontWeight={status ? "700" : "400"}
-            fontSize={"1.2em"}
-        >
-            {name}
-        </Link>
+        <Ln to={path}>
+            <Link
+                lineHeight="inherit"
+                _hover={{
+                    textDecoration: 'none',
+                    color: "#865BFF",
+                    transform: 'scale(1.05)',
+                    fontWeight: "700",
+                    transition: "color 0.3s ease"
+                }}
+                onClick={() => onClose()}
+                color={status ? "#865BFF" : "#77798F"}
+                fontWeight={status ? "700" : "400"}
+                fontSize={"1.2em"}
+            >
+
+                {name}
+            </Link>
+        </Ln>
+
     );
 }

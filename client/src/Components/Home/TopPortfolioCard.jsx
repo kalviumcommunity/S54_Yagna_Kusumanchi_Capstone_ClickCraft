@@ -33,7 +33,7 @@ const TopPortfolioCard = () => {
             <Box position={"relative"} mt={20} mb={5}>
                 <Image src={portfolio} borderRadius={10} boxShadow='0px 0px 100px rgba(102, 77, 255, 0.2)' backdropBlur='blur(264)' cursor="pointer" _hover={{ transform: "scale(1.01)" }} onMouseEnter={display}/>
                 {on &&
-                <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display} >
+                <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display}>
                     <Box display={"flex"} justifyContent="center" alignItems="center" flexDirection="column" gap={4}>
                         <Button bg="#010314"
                             size="md"
