@@ -12,7 +12,7 @@ import Footer from './Footer'
 const Home = () => {
   return (
     <div>
-      <Navbar/>
+      <Navbar tab={"Home"}/>
       <HeroContent/>
       <Image src={img} h="auto" maxW={'100%'} mx={"auto"}/>
       <Setupbox/>

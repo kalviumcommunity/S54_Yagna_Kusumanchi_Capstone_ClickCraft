@@ -4,6 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import ParentContext from './context/ParentContext';
 import Auth from './Components/Auth/Auth';
 import Home from './Components/Home/Home';
+import Portfolios from './Components/Portfolios/Portfolios';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Home/>} />
+            <Route path='/portfolios' element={<Portfolios/>} />
           </Routes>
         </BrowserRouter>
         <ParentContext />
