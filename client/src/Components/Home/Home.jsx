@@ -5,6 +5,9 @@ import { Image } from '@chakra-ui/react'
 import HeroContent from './HeroContent'
 import Setupbox from './Setupbox'
 import TopPortfolios from './TopPortfolios'
+import RecentUsers from './RecentUsers'
+import AboutInfo from './AboutInfo'
+import Footer from './Footer'
 
 const Home = () => {
   return (
@@ -14,6 +17,9 @@ const Home = () => {
       <Image src={img} h="auto" maxW={'100%'} mx={"auto"}/>
       <Setupbox/>
       <TopPortfolios/>
+      <RecentUsers/>
+      <AboutInfo/>
+      <Footer/>
     </div>
   )
 }
