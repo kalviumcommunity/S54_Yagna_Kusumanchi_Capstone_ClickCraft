@@ -35,6 +35,14 @@ export default function Navbar({ tab }) {
         console.log(user)
     }, [user, isAuthenticated])
 
+    const SignUpHandler = ()=>{
+
+    }
+
+    const LoginHandler = ()=>{
+        
+    }
+
     return (
         <Box px={4} bg='#010314' mt={3}>
             <Flex h={16} alignItems="center" justifyContent="space-between" mx="auto">
