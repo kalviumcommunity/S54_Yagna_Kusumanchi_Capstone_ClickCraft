@@ -5,7 +5,7 @@ require('dotenv').config()
 const cors = require('cors')
 
 app.use(cors({
-    origin: ['https://genshortlink.vercel.app','http://localhost:5173'],
+    origin: ['http://localhost:3000','http://localhost:5173'],
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type',
     credentials: true,
@@ -23,3 +23,6 @@ connectMongoDB().then(()=>{
 app.get('/', (req, res) => {
     res.send("Welcome")
 })
+
+const UserRouter = require("./routes/User")
+app.use('/user', UserRouter);

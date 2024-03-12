@@ -30,9 +30,9 @@ export default function Navbar({ tab }) {
         { name: 'Portfolios', path: '/portfolios', status: tab == "Portfolios" },
         { name: 'Community', path: '/community', status: tab == "Community" },
     ]
-
+    
     useEffect(() => {
-        // console.log(user, isAuthenticated)
+        console.log(user)
     }, [user, isAuthenticated])
 
     return (
