@@ -36,7 +36,7 @@ export default function Navbar({ tab }) {
 
     const fetchDataFromMongoDB = async (email) => {
         try {
-            const response = await axios.get(`http://localhost:3001/user/verify?email=${email}`)
+            const response = await axios.get(`https://c-craft-server.vercel.app/user/verify?email=${email}`)
             return response.data
         } catch (error) {
             if (error.response && error.response.status === 404) {
@@ -51,7 +51,7 @@ export default function Navbar({ tab }) {
 
     const createUserInMongoDB = async (name, email, picture) => {
         try {
-            const response = await axios.post('http://localhost:3001/user', {
+            const response = await axios.post('https://c-craft-server.vercel.app/user', {
                 name,
                 email,
                 picture,
@@ -90,7 +90,7 @@ export default function Navbar({ tab }) {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/user')
+            const response = await axios.get('https://c-craft-server.vercel.app/user')
             setUsers(response.data)
         } catch (error) {
             console.error('Error fetching all users:', error.message)

@@ -5,7 +5,7 @@ require('dotenv').config()
 const cors = require('cors')
 
 app.use(cors({
-    origin: ['http://localhost:3000','http://localhost:5173'],
+    origin: ['https://my-portfolio-11.vercel.app','http://localhost:5173', 'https://click-craft.vercel.app'],
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type',
     credentials: true,
@@ -21,7 +21,7 @@ connectMongoDB().then(()=>{
 })
 
 app.get('/', (req, res) => {
-    res.send("Welcome")
+    res.send("Welcome1")
 })
 
 const UserRouter = require("./routes/User")
