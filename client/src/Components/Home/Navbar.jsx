@@ -78,7 +78,7 @@ export default function Navbar({ tab }) {
                     console.log("Creating new user")
                     const newUser = await createUserInMongoDB(user.name, user.email, user.picture)
                     setUserProfile(newUser)
-                    setMessage('User created successfully')
+                    // setMessage('User created successfully')
                 }
             } catch (error) {
                 setMessage(error.message)
