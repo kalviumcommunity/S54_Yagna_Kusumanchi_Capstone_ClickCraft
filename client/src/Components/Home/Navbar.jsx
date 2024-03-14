@@ -30,10 +30,18 @@ export default function Navbar({ tab }) {
         { name: 'Portfolios', path: '/portfolios', status: tab == "Portfolios" },
         { name: 'Community', path: '/community', status: tab == "Community" },
     ]
-
+    
     useEffect(() => {
-        // console.log(user, isAuthenticated)
+        console.log(user)
     }, [user, isAuthenticated])
+
+    const SignUpHandler = ()=>{
+
+    }
+
+    const LoginHandler = ()=>{
+        
+    }
 
     return (
         <Box px={4} bg='#010314' mt={3}>
