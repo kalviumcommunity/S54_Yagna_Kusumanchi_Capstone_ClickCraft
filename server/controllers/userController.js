@@ -5,18 +5,26 @@ function capitalize(str) {
 }
 
 const createUser = async (req, res) => {
-    const { name, picture, email } = req.body
 
     try {
-        const oldUser = await Users.findOne({ email })
-        if (oldUser) {
-            return res.json({ error: "User already exists" })
+        const { name, picture, email } = req.body;
+
+        const existingUser = await Users.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'User already exists' });
         }
-        await Users.create({
+
+        var [firstName, lastName] = name.split(' ');
+        if (lastName == undefined) {
+            lastName = ''
+        }
+        const userId = Math.floor(Math.random() * 100) + 1;
+
+        const newUser = {
             name,
-            FirstName: capitalize(name.split(' ')[0]),
-            LastName: capitalize(name.split(' ')[1]),
-            UserId: Math.floor(Math.random() * 10) + 1,
+            FirstName: capitalize(firstName),
+            LastName: capitalize(lastName),
+            UserId: userId,
             picture,
             email,
             portfolios: [],
@@ -24,36 +32,49 @@ const createUser = async (req, res) => {
             likes: 0,
             liked: [],
             profile: {
-                name: name,
-                firstName: "",
-                lastName: "",
-                position: [],
-                email: "",
-                social: {
-                    facebook: "",
-                    instagram: "",
-                    github: "",
-                    linkedIn: ""
-                },
-                bio: "",
-                skills: [],
-                hobies: [],
+                name,
+                firstName: firstName,
+                lastName: lastName,
+                location: "",
+                education: "",
+                educationInstitution: "",
+                activities: "",
+                quote: "",
+                githubUserName: "",
+                programmingLanguages: [],
+                fieldOfInterest: [],
+                passion: [],
+                jobTitles: [],
+                currPosition: "",
                 projects: [
                     {
+                        imgLink: "",
                         title: "",
-                        live: "",
-                        source:"",
-                        image:""
+                        description: "",
+                        ghLink: "",
+                        demoLink: ""
                     }
-                ]
+                ],
+                socialLinks: {
+                    github: "",
+                    twitter: "",
+                    linkedin: "",
+                    instagram: ""
+                },
             }
-        })
+        };
 
-        res.status(201).json({ message: 'User created successfully' })
+        await Users.create(newUser);
+
+        const userData = await Users.findOne({ email: email });
+
+        if (userData) {
+            res.status(201).json(userData);
+        }
 
     } catch (err) {
-        console.log(err)
-        res.status(400).send({ message: "User already exists" })
+        console.error(err);
+        res.status(500).send({ message: 'Internal Server Error' });
     }
 }
 
@@ -86,19 +107,12 @@ const getUser = async (req, res) => {
 }
 
 const getUserByEmail = async (req, res) => {
-    const id = req.params.id;
-
-    try {
-        const user = await Users.findOne({ _id: id });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        res.status(200).json(user);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ err: 'Internal Server Error' });
+    const userEmail = req.query.email;
+    const userData = await Users.findOne({ email: userEmail });
+    if (userData) {
+        res.status(200).json(userData);
+    } else {
+        res.status(404).json({ error: "User not found" })
     }
 }
 
