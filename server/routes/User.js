@@ -5,6 +5,6 @@ const {createUser, getAllUsers, getUser, getUserByEmail} = require("../controlle
 router.post('/', createUser);
 router.get('/', getAllUsers);
 router.get('/:name/:id', getUser);
-router.get('/:id', getUserByEmail);
+router.get('/verify/', getUserByEmail);
 
 module.exports = router;

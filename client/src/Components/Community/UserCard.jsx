@@ -26,7 +26,7 @@ const obj =
 
 
 
-const UserCard = () => {
+const UserCard = ({user}) => {
     const iconHover = {
         transform: "scale(1.1)"
     }
@@ -68,24 +68,24 @@ const UserCard = () => {
                 }}
             >
                 <Text fontWeight="400" fontSize="16px" color="#77798F">
-                    {obj.content}
+                    {user.bio}
                 </Text>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Text>Portfolios: <span style={{ fontWeight: "bold" }}>10</span></Text>
+                    <Text>Portfolios: <span style={{ fontWeight: "bold" }}>{user.portfolios.length}</span></Text>
                     <Box display="flex" justifyContent="space-between" gap={2}>
                         <Box display="flex" justifyContent="space-around" alignItems="center" >
                             <IconButton bg="transparent" color="#e31b23" minW={"25px"} h="25px" _hover={iconHover} m={1} _active={{ bg: "#010310" }} onClick={() => setIsLiked(!isLiked)}>
                                 {isLiked ? <FaHeart size="20px" /> : <FaRegHeart size="20px" />}
 
                             </IconButton>
-                            <Text fontWeight="500" fontSize="16px">99</Text>
+                            <Text fontWeight="500" fontSize="16px">{user.likes}</Text>
                         </Box>
                         <Box display="flex" justifyContent="space-around" alignItems="center">
                             <Box m={2}>
 
                                 <IoEyeSharp size="25px" />
                             </Box>
-                            <Text fontWeight="500" fontSize="16px">999</Text>
+                            <Text fontWeight="500" fontSize="16px">{user.views}</Text>
                         </Box>
                     </Box>
 
@@ -103,11 +103,11 @@ const UserCard = () => {
                     showBorder={true}
                     borderColor="#664DFF"
                     name="avatar"
-                    src={obj.image}
+                    src={user.picture}
                 />
                 <Box textAlign="center">
                     <Text fontWeight="600" fontSize="md" w={"120px"}>
-                        {obj.name}
+                        {user.name}
                     </Text>
                 </Box>
             </Stack>

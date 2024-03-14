@@ -10,38 +10,98 @@ import {
     useDisclosure,
     useColorModeValue,
     Avatar
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
-import { Link as Ln } from "react-router-dom";
+import { Link as Ln } from "react-router-dom"
 
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { AiOutlineClose } from 'react-icons/ai';
-import { useContext, useEffect } from 'react';
-import { AppContext } from '../../context/ParentContext';
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { AiOutlineClose } from 'react-icons/ai'
+import { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../../context/ParentContext'
+import axios from "axios"
 
 
 
 export default function Navbar({ tab }) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [message, setMessage] = useState('')
 
-    const { loginWithRedirect, isAuthenticated, user, logout } = useContext(AppContext)
+    const { loginWithRedirect, isAuthenticated, user, logout, setUserProfile, userProfile, setUsers } = useContext(AppContext)
+
     const navLinks = [
         { name: 'Home', path: '/', status: tab == "Home" },
         { name: 'Portfolios', path: '/portfolios', status: tab == "Portfolios" },
         { name: 'Community', path: '/community', status: tab == "Community" },
     ]
-    
+
+    const fetchDataFromMongoDB = async (email) => {
+        try {
+            const response = await axios.get(`http://localhost:3001/user/verify?email=${email}`)
+            return response.data
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                console.log('User not found error:', error.message)
+                return null
+            } else {
+                console.error('Error fetching user data from MongoDB:', error.message)
+                throw new Error('Internal Server Error')
+            }
+        }
+    }
+
+    const createUserInMongoDB = async (name, email, picture) => {
+        try {
+            const response = await axios.post('http://localhost:3001/user', {
+                name,
+                email,
+                picture,
+            })
+
+            if (response.status === 201) {
+                return response.data
+            } else {
+                throw new Error(response.data.error || 'Error creating user')
+            }
+        } catch (error) {
+            console.error('Error creating user:', error.message)
+            throw new Error('Internal Server Error')
+        }
+    }
+
+    const HandleData = async () => {
+        if (isAuthenticated && user) {
+            try {
+                const userData = await fetchDataFromMongoDB(user.email)
+                if (userData) {
+                    setUserProfile(userData)
+                } else {
+                    console.log("Creating new user")
+                    const newUser = await createUserInMongoDB(user.name, user.email, user.picture)
+                    setUserProfile(newUser)
+                    setMessage('User created successfully')
+                }
+            } catch (error) {
+                setMessage(error.message)
+            }
+        } else {
+            setUserProfile(null)
+        }
+    }
+
+    const fetchUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/user')
+            setUsers(response.data)
+        } catch (error) {
+            console.error('Error fetching all users:', error.message)
+        }
+    }
+
     useEffect(() => {
-        console.log(user)
+        HandleData()
+        fetchUsers()
     }, [user, isAuthenticated])
 
-    const SignUpHandler = ()=>{
-
-    }
-
-    const LoginHandler = ()=>{
-        
-    }
 
     return (
         <Box px={4} bg='#010314' mt={3}>
@@ -50,8 +110,6 @@ export default function Navbar({ tab }) {
                     <Text >CLICK</Text>
                     <Text color='#7241FF'>CRAFT</Text>
                 </Flex>
-
-
                 <HStack spacing={8} alignItems="center">
                     <HStack as="nav" spacing={6} d={{ base: 'none', md: 'flex' }} alignItems="center">
                         {navLinks.map((link, index) => (
@@ -67,7 +125,7 @@ export default function Navbar({ tab }) {
                                 as={Link}
                                 border="3px solid #7241FF"
                                 rounded="full"
-                                src={user.picture}
+                                src={userProfile?.picture}
                             />
                         </Ln>
 
@@ -142,7 +200,7 @@ export default function Navbar({ tab }) {
                 </Box>
             ) : null}
         </Box>
-    );
+    )
 }
 
 const NavLink = ({ name, path, onClose, status }) => {
@@ -167,5 +225,7 @@ const NavLink = ({ name, path, onClose, status }) => {
             </Link>
         </Ln>
 
-    );
+    )
 }
+
+// cloudnary
