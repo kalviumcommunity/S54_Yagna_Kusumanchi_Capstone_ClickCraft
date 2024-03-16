@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, IconButton, Image, Link, Text } from '@chakra-ui/react'
+import { Box, Button, Flex, Icon, IconButton, Image, Link, Text, useToast } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
 import Portfolio from "../../Assets/portfolio.png"
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
@@ -6,9 +6,9 @@ import { IoEyeSharp } from "react-icons/io5";
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { AppContext } from '../../context/ParentContext';
 
-const PortfolioCard = ({ Data }) => {
-    const { userProfile, setUserProfile } = useContext(AppContext)
-
+const YourPortfolios = ({ Data }) => {
+    const { userProfile } = useContext(AppContext)
+    const toast = useToast()
     const BoxStyle = {
         borderTop: '1px solid #664DFF',
         borderBottom: '3px solid #664DFF',
@@ -25,33 +25,18 @@ const PortfolioCard = ({ Data }) => {
     const display = () => {
         setOn(!on)
     }
-
-    const AddPortfolio = async () => {
+    const handleCopy = async () => {
         try {
-            if (userProfile) {
-                const existingPortfolio = userProfile.portfolios.find(portfolio => portfolio.View == `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`);
-                if (existingPortfolio) {
-                    console.log('Portfolio already exists');
-                    return
-                }
-            }
-
-            const response = await axios.put('http://localhost:3001/user/update', {
-                email: userProfile.email,
-                portfolio: {
-                    View: `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`,
-                    Image: Data.Image,
-                    Likes: 0,
-                    Views: 0
-                }
-            })
-            setUserProfile(response.data.user)
-            console.log('Portfolio added successfully:', response.data);
-
+            await navigator.clipboard.writeText(Data.View);
+            toast({
+                title: 'Link Copied',
+                status: 'success',
+                isClosable: true,
+              })
         } catch (error) {
-            console.error('Error updating portfolio:', error);
+            console.error('Failed to copy:', error);
         }
-    }
+    };
 
     return (
         <Box sx={BoxStyle} w="24vw" bg={"#010314"} display={"flex"} justifyContent="center" flexDirection="column" px={4} py={4} color="white">
@@ -73,29 +58,11 @@ const PortfolioCard = ({ Data }) => {
                                 px={6}
                                 as={Link}
                                 textDecoration="none"
-                                href={Data.Preview}
+                                href={Data.View}
                                 target='_blank'
                             >
-                                Preview <ExternalLinkIcon ml={2} />
+                                Open <ExternalLinkIcon ml={2} />
                             </Button>
-                            <Button bg="#010314"
-                                size="md"
-                                color="white"
-                                border="3px solid #7241FF"
-                                borderRadius="10px"
-                                style={{
-                                    filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
-                                    transition: "background-color 0.3s ease",
-                                }}
-                                _hover={{ bg: "#7241FF" }}
-                                d={{ base: 'none', md: 'block' }}
-                                px={6}
-                                onClick={AddPortfolio}
-                            >
-
-                                Customize
-                            </Button>
-
                         </Box>
                     </Box>}
             </Box>
@@ -112,14 +79,13 @@ const PortfolioCard = ({ Data }) => {
                     }}
                     _hover={{ bg: "#7241FF" }}
                     px={4}
-                    onClick={AddPortfolio}
+                    onClick={handleCopy}
                 >
-                    Customize This
+                    Copy Link
                 </Button>
                 <Box display="flex" justifyContent="space-around" alignItems="center" >
                     <IconButton bg="transparent" color="#e31b23" minW={"25px"} h="25px" _hover={iconHover} m={1} _active={{ bg: "#010310" }} onClick={() => setIsLiked(!isLiked)}>
                         {isLiked ? <FaHeart size="20px" /> : <FaRegHeart size="20px" />}
-
                     </IconButton>
                     <Text fontWeight="500" fontSize="16px">{Data.Likes}</Text>
                 </Box>
@@ -135,4 +101,4 @@ const PortfolioCard = ({ Data }) => {
     )
 }
 
-export default PortfolioCard
+export default YourPortfolios

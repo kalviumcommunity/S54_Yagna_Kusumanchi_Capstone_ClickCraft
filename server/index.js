@@ -21,8 +21,10 @@ connectMongoDB().then(()=>{
 })
 
 app.get('/', (req, res) => {
-    res.send("Welcome1")
+    res.send("Welcome")
 })
 
 const UserRouter = require("./routes/User")
 app.use('/user', UserRouter);
+const TemplatesRouter = require("./routes/Template")
+app.use('/templates', TemplatesRouter);

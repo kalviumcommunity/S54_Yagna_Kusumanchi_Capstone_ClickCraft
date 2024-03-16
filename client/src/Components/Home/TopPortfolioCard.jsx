@@ -1,17 +1,50 @@
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Button, Flex, Heading, Image, Link, Text } from '@chakra-ui/react'
+import React, { useContext, useState } from 'react'
 import star from "../../Assets/star.png"
-import portfolio from "../../Assets/portfolio.png"
+// import portfolio from "../../Assets/portfolio.png"
 import { ExternalLinkIcon } from '@chakra-ui/icons'
+import axios from 'axios'
+import { AppContext } from '../../context/ParentContext'
+import { useNavigate } from "react-router-dom";
 
 
+const TopPortfolioCard = ({ Data }) => {
+    const { userProfile, setUserProfile } = useContext(AppContext)
 
-const TopPortfolioCard = () => {
+    const navigate = useNavigate();
 
-    const [ on, setOn ] = useState(false)
+    const [on, setOn] = useState(false)
 
-    const display = ()=>{
+    const display = () => {
         setOn(!on)
+    }
+
+    const AddPortfolio = async () => {
+        try {
+            if (userProfile) {
+                const existingPortfolio = userProfile.portfolios.find(portfolio => portfolio.View == `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`);
+                if (existingPortfolio) {
+                    console.log('Portfolio already exists');
+                    navigate('/update')
+                    return
+                }
+            }
+
+            const response = await axios.put('http://localhost:3001/user/update', {
+                email: userProfile.email,
+                portfolio: {
+                    View: `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`,
+                    Image: Data.Image,
+                    Likes: 0,
+                    Views: 0
+                }
+            })
+            setUserProfile(response.data.user)
+            console.log('Portfolio added successfully:', response.data);
+            navigate('/update')
+        } catch (error) {
+            console.error('Error updating portfolio:', error);
+        }
     }
 
     const BoxStyle = {
@@ -29,44 +62,51 @@ const TopPortfolioCard = () => {
                 <Text letterSpacing={4} bgGradient='linear(to-br, #627FFF, #865BFF)' bgClip='text' fontSize="12px" fontWeight="700">How To Start</Text>
             </Flex>
             <Heading size="xl" bgGradient='radial(#FFFFFF,#FFFFFF, rgba(255,255,255,0.7), rgba(255,255,255,0.7))' bgClip='text'>Customize This Template</Heading>
-            <Text color="#77798F" mt={5} maxW="600px" fontSize="1.4em">Select this template, Enter your details, confirm and hit “Generate” for your unique portfolio.</Text>
+            <Text color="#77798F" mt={5} maxW="600px" fontSize="lg">Select this template, Enter your details, confirm and hit “Generate” for your unique portfolio.</Text>
             <Box position={"relative"} mt={20} mb={5}>
-                <Image src={portfolio} borderRadius={10} boxShadow='0px 0px 100px rgba(102, 77, 255, 0.2)' backdropBlur='blur(264)' cursor="pointer" _hover={{ transform: "scale(1.01)" }} onMouseEnter={display}/>
+                <Image src={Data.Image} borderRadius={10} boxShadow='0px 0px 100px rgba(102, 77, 255, 0.2)' backdropBlur='blur(264)' cursor="pointer" _hover={{ transform: "scale(1.01)" }} onMouseEnter={display} />
                 {on &&
-                <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display}>
-                    <Box display={"flex"} justifyContent="center" alignItems="center" flexDirection="column" gap={4}>
-                        <Button bg="#010314"
-                            size="md"
-                            color="white"
-                            border="3px solid #2A2B3A"
-                            borderRadius="10px"
-                            _hover={{
-                                bg: "#7241FF", border: "3px solid #7241FF", filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
-                                transition: "background-color 0.3s ease"
-                            }}
-                            d={{ base: 'none', md: 'block' }}
-                            px={8}
-                        >
-                            Preview <ExternalLinkIcon ml={2} />
-                        </Button>
-                        <Button bg="#010314"
-                            size="md"
-                            color="white"
-                            border="3px solid #7241FF"
-                            borderRadius="10px"
-                            style={{
-                                filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
-                                transition: "background-color 0.3s ease",
-                            }}
-                            _hover={{ bg: "#7241FF" }}
-                            d={{ base: 'none', md: 'block' }}
-                            px={8}
-                        >
-                            Customize
-                        </Button>
+                    <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display}>
+                        <Box display={"flex"} justifyContent="center" alignItems="center" flexDirection="column" gap={4}>
+                            <Button bg="#010314"
+                                size="md"
+                                color="white"
+                                border="3px solid #2A2B3A"
+                                borderRadius="10px"
+                                _hover={{
+                                    bg: "#7241FF", border: "3px solid #7241FF", filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
+                                    transition: "background-color 0.3s ease"
+                                }}
+                                d={{ base: 'none', md: 'block' }}
+                                px={8}
+                                as={Link}
+                                textDecoration="none"
+                                href={Data.Preview}
+                                target='_blank'
+                            >
+                                Preview <ExternalLinkIcon ml={2} />
+                            </Button>
+                            <Button bg="#010314"
+                                size="md"
+                                color="white"
+                                border="3px solid #7241FF"
+                                borderRadius="10px"
+                                style={{
+                                    filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
+                                    transition: "background-color 0.3s ease",
+                                }}
+                                _hover={{ bg: "#7241FF" }}
+                                d={{ base: 'none', md: 'block' }}
+                                px={8}
+                                
+                                onClick={AddPortfolio}
+                                
+                            >
+                                Customize
+                            </Button>
 
-                    </Box>
-                </Box>}
+                        </Box>
+                    </Box>}
             </Box>
         </Box>
     )

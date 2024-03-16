@@ -7,6 +7,7 @@ import Home from './Components/Home/Home';
 import Portfolios from './Components/Portfolios/Portfolios';
 import Community from './Components/Community/Community';
 import YourProfile from './Components/Profile.jsx/YourProfile';
+import UpdateProfile from './Components/Profile.jsx/UpdateProfile';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path='/portfolios' element={<Portfolios/>} />
             <Route path='/community' element={<Community/>} />
             <Route path='/profile' element={<YourProfile/>} />
+            <Route path='/update' element={<UpdateProfile/>} />
           </Routes>
         </BrowserRouter>
         <ParentContext />
