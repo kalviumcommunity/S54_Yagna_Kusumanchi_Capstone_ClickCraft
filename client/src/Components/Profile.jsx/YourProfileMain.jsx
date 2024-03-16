@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import Yagna from "../../Assets/Yagna.jpg"
 import PortfolioCard from '../Portfolios/PortfolioCard'
 import { AppContext } from '../../context/ParentContext'
+import YourPortfolios from './YourPortfolios'
 
 const YourProfileMain = () => {
   const BoxStyle = {
@@ -41,13 +42,14 @@ const YourProfileMain = () => {
         <Box w="80%" textAlign="justify">
 
           <Text fontWeight="medium" fontSize="24">About</Text>
-          <Text color="#77798F" my={4}>{userProfile?.about}</Text>
+          <Text color="#77798F" my={4}>{userProfile?.profile.about}</Text>
           <Text fontWeight="medium" fontSize="24">My Portfolios</Text>
-          <Box display="flex" justifyContent="space-around" alignItems="center" gap={10} flexWrap="wrap" mx="auto" my={10}>
-            <PortfolioCard />
-            <PortfolioCard />
-            <PortfolioCard />
-            {/* <PortfolioCard /> */}
+          <Box display="flex" justifyContent="left" alignItems="center" gap={10} columnGap={20} flexWrap="wrap" mx="auto" my={10}>
+            {
+              userProfile?.portfolios?.map((Data, i)=>{
+                return <YourPortfolios Data={Data} key={i}/>
+              })
+            }
           </Box>
         </Box>
       </Box>

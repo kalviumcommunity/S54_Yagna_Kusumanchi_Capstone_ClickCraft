@@ -1,7 +1,24 @@
 const Templates = require("../Schemas/TemplateSchema")
 
-const getTemplate = async (req, res)=>{
-    const {id} = req.params
+
+const createTemplate = async (req, res) => {
+    try {
+        const { Preview, Image, Category } = req.body;
+        const template = new Templates({
+            Preview,
+            Image,
+            Category,
+        });
+        const newTemplate = await template.save();
+        res.status(201).json({template:newTemplate, message:"Template Created Successfully"});
+    } catch (error) {
+        console.error('Error creating template:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+const getTemplate = async (req, res) => {
+    const { id } = req.params
 
     try {
         const Template = await Users.findOne({ _id: id });
@@ -9,7 +26,6 @@ const getTemplate = async (req, res)=>{
         if (!Template) {
             return res.status(404).json({ message: 'Template Not Found' });
         }
-
         res.status(200).json(Template);
     } catch (err) {
         console.error(err);
@@ -57,4 +73,4 @@ const updateTemplateStats = async (req, res) => {
     }
 };
 
-module.exports = {getTemplate, updateTemplateStats, getAllTemplates}
+module.exports = { getTemplate, updateTemplateStats, getAllTemplates, createTemplate }

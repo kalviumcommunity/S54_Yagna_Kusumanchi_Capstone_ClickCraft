@@ -26,7 +26,7 @@ export default function Navbar({ tab }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [message, setMessage] = useState('')
 
-    const { loginWithRedirect, isAuthenticated, user, logout, setUserProfile, userProfile, setUsers } = useContext(AppContext)
+    const { loginWithRedirect, isAuthenticated, user, logout, setUserProfile, userProfile, setUsers, setTemplates } = useContext(AppContext)
 
     const navLinks = [
         { name: 'Home', path: '/', status: tab == "Home" },
@@ -78,7 +78,7 @@ export default function Navbar({ tab }) {
                     console.log("Creating new user")
                     const newUser = await createUserInMongoDB(user.name, user.email, user.picture)
                     setUserProfile(newUser)
-                    // setMessage('User created successfully')
+                    setMessage('User created successfully')
                 }
             } catch (error) {
                 setMessage(error.message)
@@ -96,10 +96,19 @@ export default function Navbar({ tab }) {
             console.error('Error fetching all users:', error.message)
         }
     }
+    const fetchTemplates = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/templates/all')
+            setTemplates(response.data)
+        } catch (error) {
+            console.error('Error fetching all users:', error.message)
+        }
+    }
 
     useEffect(() => {
         HandleData()
         fetchUsers()
+        fetchTemplates()
     }, [user, isAuthenticated])
 
 

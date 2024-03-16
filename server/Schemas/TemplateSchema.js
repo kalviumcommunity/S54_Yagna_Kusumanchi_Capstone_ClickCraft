@@ -2,14 +2,29 @@ const mongoose = require('mongoose')
 
 const TemplateSchema = new mongoose.Schema(
     {
-        Preview:String,
-        Image:String,
-        Category:Array,
-        Likes:Number,
-        Views:Number
+        Preview: {
+            type: String,
+            required: true,
+          },
+          Image: {
+            type: String,
+            required: true,
+          },
+          Category: {
+            type: [String],
+            required: true,
+          },
+          Likes: {
+            type: Number,
+            default: 0,
+          },
+          Views: {
+            type: Number,
+            default: 0,
+          }
     }
 )
 
-const Templates = mongoose.model("Templates", userSchema);
+const Templates = mongoose.model("Templates", TemplateSchema);
 
 module.exports = Templates

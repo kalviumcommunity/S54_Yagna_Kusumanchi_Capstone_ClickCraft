@@ -2,6 +2,8 @@ import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react'
 import star from "../../Assets/star.png"
 import Person from "../../Assets/Person.png"
 import React from 'react'
+import UpdateProfile from '../Profile.jsx/UpdateProfile'
+import { Link } from 'react-router-dom'
 
 const Setupbox = () => {
 
@@ -46,6 +48,8 @@ const Setupbox = () => {
                         px={5}
                         py={5}
                         mt={5}
+                        as={Link}
+                        to="/update"
                     >
                         Complete Your Profile
                     </Button>
