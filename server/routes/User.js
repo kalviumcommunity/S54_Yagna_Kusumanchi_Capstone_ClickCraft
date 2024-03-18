@@ -7,6 +7,6 @@ router.get('/', getAllUsers);
 router.get('/:name/:id', getUser);
 router.get('/verify/', getUserByEmail);
 router.put('/update/', updatePortfolios);
-router.put('/updateprofile/', updateUserProfile);
+router.put('/updateprofile', updateUserProfile);
 
 module.exports = router;

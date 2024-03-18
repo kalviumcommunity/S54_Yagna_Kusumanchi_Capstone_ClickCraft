@@ -13,7 +13,7 @@ app.use(cors({
 
 app.use(express.json())
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 const connectMongoDB = require("./DataBase/ConnectMongoDB")
 connectMongoDB().then(()=>{
@@ -22,6 +22,10 @@ connectMongoDB().then(()=>{
 
 app.get('/', (req, res) => {
     res.send("Welcome")
+})
+
+app.get("/last", (req, res)=>{
+    res.send("Added Templates")
 })
 
 const UserRouter = require("./routes/User")

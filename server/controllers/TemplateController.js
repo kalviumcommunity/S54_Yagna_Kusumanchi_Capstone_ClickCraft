@@ -21,7 +21,7 @@ const getTemplate = async (req, res) => {
     const { id } = req.params
 
     try {
-        const Template = await Users.findOne({ _id: id });
+        const Template = await Templates.findOne({ _id: id });
 
         if (!Template) {
             return res.status(404).json({ message: 'Template Not Found' });
