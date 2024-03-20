@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
         if (lastName == undefined) {
             lastName = ''
         }
-        const userId = Math.floor(Math.random() * 100) + 1
+        const userId = Math.floor(Math.random() * 10000) + 1
 
         const newUser = {
             name,
@@ -89,11 +89,10 @@ const getAllUsers = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    const firstName = capitalize(req.params.name)
     const userId = req.params.id
 
     try {
-        const data = await Users.findOne({ FirstName: firstName, UserId: userId })
+        const data = await Users.findOne({UserId: userId })
 
         if (!data) {
             return res.status(404).json({ message: 'User not found' })

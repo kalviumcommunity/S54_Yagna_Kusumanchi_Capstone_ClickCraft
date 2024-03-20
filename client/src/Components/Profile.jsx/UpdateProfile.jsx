@@ -17,8 +17,15 @@ import { useContext } from 'react'
 import { AppContext } from '../../context/ParentContext'
 import axios from 'axios'
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
+// export default function UpdateProfile() {
+//     const {isAuthenticated} = useContext(AppContext)
+//     if(!isAuthenticated){
+//         Navigate('/noLoggedIn')
+//     }
+//     return
+// }
 
 export default function UpdateProfile() {
     const {
@@ -27,8 +34,15 @@ export default function UpdateProfile() {
         formState: { isSubmitting },
     } = useForm()
 
-    const { user, setUserProfile, userProfile } = useContext(AppContext)
+    const { user, setUserProfile, userProfile, isAuthenticated } = useContext(AppContext)
     const navigate = useNavigate();
+    if (!isAuthenticated) {
+
+        return (
+            <div>
+                Please Register Your Account or Login to your account
+            </div>)
+    }
 
     function onSubmit(data) {
         return new Promise((resolve) => {
@@ -36,7 +50,7 @@ export default function UpdateProfile() {
                 try {
                     const response = await axios.put('http://localhost:3001/user/updateprofile', {
                         email: user.email,
-                        name:data.name,
+                        name: data.name,
                         profile: {
                             name: data.name,
                             firstName: data.name.split(' ')[0],
@@ -73,7 +87,7 @@ export default function UpdateProfile() {
                     console.log(response.data);
                     setUserProfile(response.data)
                     navigate("/profile");
-                    
+
                 } catch (error) {
                     console.error('Error updating profile:', error);
                     alert('Failed to update profile!');
@@ -95,65 +109,65 @@ export default function UpdateProfile() {
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='name'>Name</FormLabel>
-                                <Input id='name' placeholder='Name' {...register('name')} />
+                                <Input id='name' placeholder='Name' defaultValue={userProfile?.name} {...register('name')} />
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel htmlFor='location'>Location</FormLabel>
-                                <Input id='location' placeholder='Location' {...register('location')} />
+                                <Input id='location' placeholder='Location' defaultValue={userProfile?.profile?.location} {...register('location')} />
                             </FormControl>
                         </Stack>
 
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='education'>Education</FormLabel>
-                                <Input id='education' placeholder='Education' {...register('education')} />
+                                <Input id='education' placeholder='Education' defaultValue={userProfile?.profile?.education} {...register('education')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='educationInstitution'>Education Institution</FormLabel>
-                                <Input id='educationInstitution' placeholder='Education Institution' {...register('educationInstitution')} />
+                                <Input id='educationInstitution' placeholder='Education Institution' defaultValue={userProfile?.profile?.educationInstitution} {...register('educationInstitution')} />
                             </FormControl>
                         </Stack>
 
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='activities'>Hobbies</FormLabel>
-                                <Input id='activities' placeholder='Hobbies' {...register('activities')} />
+                                <Input id='activities' placeholder='Hobbies' defaultValue={userProfile?.profile?.activities} {...register('activities')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='quote'>Quote</FormLabel>
-                                <Input id='quote' placeholder='Quote' {...register('quote')} />
+                                <Input id='quote' placeholder='Quote' defaultValue={userProfile?.profile?.quote} {...register('quote')} />
                             </FormControl>
                         </Stack>
 
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='githubUserName'>Github Username</FormLabel>
-                                <Input id='githubUserName' placeholder='Github Username' {...register('githubUserName')} />
+                                <Input id='githubUserName' placeholder='Github Username' defaultValue={userProfile?.profile?.githubUserName} {...register('githubUserName')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='programmingLanguages'>Programming Languages</FormLabel>
-                                <Input id='programmingLanguages' placeholder='Enter with comma separated' {...register('programmingLanguages')} />
+                                <Input id='programmingLanguages' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.programmingLanguages?.join(",")} {...register('programmingLanguages')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='fieldOfInterest'>field Of Interest</FormLabel>
-                                <Input id='fieldOfInterest' placeholder='Enter with comma separated' {...register('fieldOfInterest')} />
+                                <Input id='fieldOfInterest' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.fieldOfInterest?.join(",")} {...register('fieldOfInterest')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='passion'>passion</FormLabel>
-                                <Input id='passion' placeholder='Enter with comma separated' {...register('passion')} />
+                                <Input id='passion' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.passion?.join(",")} {...register('passion')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='jobTitles'>jobTitles</FormLabel>
-                                <Input id='jobTitles' placeholder='Enter with comma separated' {...register('jobTitles')} />
+                                <Input id='jobTitles' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.jobTitles?.join(",")} {...register('jobTitles')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='currPosition'>Your Current Position</FormLabel>
-                                <Input id='currPosition' placeholder='Your Current Position' {...register('currPosition')} />
+                                <Input id='currPosition' placeholder='Your Current Position' defaultValue={userProfile?.profile?.currPosition} {...register('currPosition')} />
                             </FormControl>
                         </Stack>
 
@@ -162,21 +176,21 @@ export default function UpdateProfile() {
                         <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='github'>Git Hub</FormLabel>
-                                <Input id='github' placeholder='Git hub Profile Link' {...register('github')} />
+                                <Input id='github' placeholder='Git hub Profile Link' defaultValue={userProfile?.profile?.socialLinks?.github} {...register('github')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='twitter'>Twitter</FormLabel>
-                                <Input id='twitter' placeholder='Twitter Link' {...register('twitter')} />
+                                <Input id='twitter' placeholder='Twitter Link' defaultValue={userProfile?.profile?.socialLinks?.twitter} {...register('twitter')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='linkedin'>LinkedIn</FormLabel>
-                                <Input id='linkedin' placeholder='LinkedIn Profile Link' {...register('linkedin')} />
+                                <Input id='linkedin' placeholder='LinkedIn Profile Link' defaultValue={userProfile?.profile?.socialLinks?.linkedin} {...register('linkedin')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='instagram'>Instagram</FormLabel>
-                                <Input id='instagram' placeholder='Instagram Profile Link' {...register('instagram')} />
+                                <Input id='instagram' placeholder='Instagram Profile Link' defaultValue={userProfile?.profile?.socialLinks?.instagram} {...register('instagram')} />
                             </FormControl>
                         </Stack>
 

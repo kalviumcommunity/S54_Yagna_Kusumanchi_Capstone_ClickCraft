@@ -14,7 +14,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             redirect_uri: import.meta.env.VITE_CALLBACK_URL || 'http://localhost:5173/'
         }}
     >
-        {console.log(import.meta.env)}
         <App />
     </Auth0Provider>
 );

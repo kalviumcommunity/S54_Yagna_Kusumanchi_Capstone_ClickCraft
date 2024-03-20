@@ -10,7 +10,7 @@ const createTemplate = async (req, res) => {
             Category,
         });
         const newTemplate = await template.save();
-        res.status(201).json({template:newTemplate, message:"Template Created Successfully"});
+        res.status(201).json({ template: newTemplate, message: "Template Created Successfully" });
     } catch (error) {
         console.error('Error creating template:', error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -73,4 +73,36 @@ const updateTemplateStats = async (req, res) => {
     }
 };
 
-module.exports = { getTemplate, updateTemplateStats, getAllTemplates, createTemplate }
+const Like = async (req, res) => {
+    try {
+        const templateId = req.params.id;
+        const updatedTemplate = await Templates.findByIdAndUpdate(templateId, { $inc: { Likes: 1 } }, { new: true });
+        res.json(updatedTemplate);
+    } catch (error) {
+        console.error('Error updating template like:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+const unLike = async (req, res) => {
+    const templateId = req.params.id;
+
+    try {
+        const template = await Templates.findById(templateId);
+
+        if (!template) {
+            return res.status(404).json({ message: 'Template not found' });
+        }
+
+        template.Likes -= 1;
+
+        await template.save();
+
+        res.status(200).json(template);
+    } catch (error) {
+        console.error('Error un liking template:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+module.exports = { getTemplate, updateTemplateStats, getAllTemplates, createTemplate, Like, unLike }

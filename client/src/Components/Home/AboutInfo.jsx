@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Heading, IconButton, Image, Text } from '@chakra-ui/react'
+import { Box, Button, Divider, Flex, Heading, IconButton, Image, Link, Text } from '@chakra-ui/react'
 import star from "../../Assets/star.png"
 import Contact from "../../Assets/Contact.png"
 import Yagna from "../../Assets/Yagna.jpg"
@@ -26,7 +26,7 @@ const AboutInfo = () => {
             <Box sx={BoxStyle} w="80vw" bg={"#010314"} display={"flex"} justifyContent="spaceBetween" alignItems="center" my={10}>
                 <Box mx={10} mr={20}>
                     <Heading size="xl" bgGradient='radial(#FFFFFF,#FFFFFF, rgba(255,255,255,0.7), rgba(255,255,255,0.7))' bgClip='text'>Always Reachable</Heading>
-                    <Text color="#77798F" mt={5} maxW="600px" fontSize="1.4em">Feel free to reach out to us anytime through email or LinkedIn. We're here to assist you and answer any queries you may have. Let's stay connected!</Text>
+                    <Text color="#77798F" mt={5} maxW="600px" fontSize="xl">Feel free to reach out to us anytime through email or LinkedIn. We're here to assist you and answer any queries you may have. Let's stay connected!</Text>
                     <Box my={5} bg="#182542" h="1px"></Box>
                     <Box display="flex" gap={6} alignItems="center">
                         <Image src={Yagna} w="75px" border="3px solid #182542" borderRadius="50%"/>
@@ -34,10 +34,10 @@ const AboutInfo = () => {
                             <Text fontWeight="500" fontSize="29px">Yagna Kusumanchi</Text>
                             <Text fontSize="16px" color="#77798F">Founder and CEO of Click Craft</Text>
                             <Box display="flex" alignItems="center">
-                                <IconButton bg="#010310" color="white" minW={"25px"} h="35px" _hover={iconHover} ><FaGithub size="20px"/></IconButton>
-                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover}><FaLinkedin size="20px"/></IconButton>
-                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover}><FaAmazon size="20px"/></IconButton>
-                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover}><FaInstagram size="20px"/></IconButton>
+                                <IconButton bg="#010310" color="white" minW={"25px"} h="35px" _hover={iconHover} as={Link} href='https://github.com/Yagna123k' target='blank'><FaGithub size="20px"/></IconButton>
+                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover} as={Link} href='https://www.linkedin.com/in/yagna-kusumanchi-799732237' target='blank'><FaLinkedin size="20px"/></IconButton>
+                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover} as={Link} href='https://amzn.eu/d/5eWC9jL' target='blank'><FaAmazon size="20px"/></IconButton>
+                                <IconButton bg="#010310" color="white" minW={"35px"} h="35px" _hover={iconHover} as={Link} href='https://www.instagram.com/yagna_kusumanchi/' target='blank'><FaInstagram size="20px"/></IconButton>
                             </Box>
                         </Box>
                     </Box>

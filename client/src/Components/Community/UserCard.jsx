@@ -1,32 +1,17 @@
 import {
-    Container,
     Box,
-    chakra,
-    Flex,
     Text,
     Stack,
     Avatar,
-    SimpleGrid,
-    useColorModeValue,
-    IconButton
+    IconButton,
 } from '@chakra-ui/react';
 
-import Yagna from "../../Assets/Yagna.jpg"
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { IoEyeSharp } from 'react-icons/io5';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-
-const obj =
-{
-    name: 'Yagna Kusumanchi',
-    image: Yagna,
-    content: `Author of "Python 3.0 for Beginners" and a Full Stack Developer passionate about creating dynamic and user-friendly web experiences.`
-}
-
-
-
-const UserCard = ({user}) => {
+const UserCard = ({ user }) => {
     const iconHover = {
         transform: "scale(1.1)"
     }
@@ -97,6 +82,9 @@ const UserCard = ({user}) => {
                 p={2}
                 justifyContent="flex-end"
                 alignItems="center"
+                as={Link}
+                to={`/user/?id=${user.UserId}`}
+                cursor={'pointer'}
             >
                 <Avatar
                     size="lg"

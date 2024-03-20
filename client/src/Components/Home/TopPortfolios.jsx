@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, HStack, Heading } from '@chakra-ui/react'
 import React, { useContext, useEffect, useState } from 'react'
 import TopPortfolioCard from './TopPortfolioCard'
 import { AppContext } from '../../context/ParentContext'
@@ -13,11 +13,11 @@ const TopPortfolios = () => {
         <>
             <Box bg="#010314" display="flex" flexDirection="column" justifyContent="center" alignItems="center" color="white" >
                 <Heading size="xl" textAlign="center" bgGradient='radial(#FFFFFF,#FFFFFF, rgba(255,255,255,0.7), rgba(255,255,255,0.7))' bgClip='text' my={20}>Top Rated Portfolios</Heading>
-                <Box display={"flex"} justifyContent="space-between" w="80vw" flexWrap="wrap" gap={10}>
-                    {topTemplates.map((Data, i) => {
-                        return <TopPortfolioCard Data = {Data} key={i}/>
-                    })}
-                </Box>
+                    <Box display="flex" overflowX="auto" maxW={"80vw"} mx="auto" sx={{ '&::-webkit-scrollbar': { display: "none" } }} gap={5}>
+                        {topTemplates.map((Data, i) => {
+                            return <TopPortfolioCard Data={Data} key={i} />
+                        })}
+                    </Box>
             </Box>
         </>
     )
