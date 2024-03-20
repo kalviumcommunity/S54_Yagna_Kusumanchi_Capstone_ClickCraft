@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Icon, IconButton, Image, Link, Text, useToast } from '@chakra-ui/react'
+import { Box, Button, Flex, Icon, IconButton, Image, Link, ScaleFade, Text, useToast } from '@chakra-ui/react'
 import React, { useContext, useState } from 'react'
 import Portfolio from "../../Assets/portfolio.png"
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
@@ -32,7 +32,7 @@ const YourPortfolios = ({ Data }) => {
                 title: 'Link Copied',
                 status: 'success',
                 isClosable: true,
-              })
+            })
         } catch (error) {
             console.error('Failed to copy:', error);
         }
@@ -43,28 +43,32 @@ const YourPortfolios = ({ Data }) => {
             <Box position={"relative"} >
                 <Image src={Data.Image} borderRadius={"10px"} boxShadow='0px 0px 100px rgba(102, 77, 255, 0.2)' backdropBlur='blur(264)' cursor="pointer" _hover={{ transform: "scale(1.01)" }} onMouseEnter={display} />
                 {on &&
-                    <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display}>
-                        <Box display={"flex"} justifyContent="center" alignItems="center" flexDirection="column" gap={4}>
-                            <Button bg="#010314"
-                                size="md"
-                                color="white"
-                                border="3px solid #2A2B3A"
-                                borderRadius="10px"
-                                _hover={{
-                                    bg: "#7241FF", border: "3px solid #7241FF", filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
-                                    transition: "background-color 0.3s ease"
-                                }}
-                                d={{ base: 'none', md: 'block' }}
-                                px={6}
-                                as={Link}
-                                textDecoration="none"
-                                href={Data.View}
-                                target='_blank'
-                            >
-                                Open <ExternalLinkIcon ml={2} />
-                            </Button>
+                    <ScaleFade initialScale={1} in={true}>
+
+                        <Box border="1px solid #2A2B3A" borderRadius="10" bgGradient="linear(to-b, #010310, rgba(102, 51, 238, 0.4))" w="100%" h={"100%"} position={"absolute"} top={0} display="flex" alignItems="center" justifyContent="center" onMouseLeave={display}>
+                            <Box display={"flex"} justifyContent="center" alignItems="center" flexDirection="column" gap={4}>
+                                <Button bg="#010314"
+                                    size="md"
+                                    color="white"
+                                    border="3px solid #2A2B3A"
+                                    borderRadius="10px"
+                                    _hover={{
+                                        bg: "#7241FF", border: "3px solid #7241FF", filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
+                                        transition: "background-color 0.3s ease"
+                                    }}
+                                    d={{ base: 'none', md: 'block' }}
+                                    px={6}
+                                    as={Link}
+                                    textDecoration="none"
+                                    href={Data.View}
+                                    target='_blank'
+                                >
+                                    Open <ExternalLinkIcon ml={2} />
+                                </Button>
+                            </Box>
                         </Box>
-                    </Box>}
+                    </ScaleFade>
+                }
             </Box>
 
             <Box display="flex" justifyContent="space-around" alignItems="center" w="100%" mt={5}>

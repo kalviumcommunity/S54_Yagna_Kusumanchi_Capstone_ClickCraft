@@ -8,6 +8,8 @@ import Portfolios from './Components/Portfolios/Portfolios';
 import Community from './Components/Community/Community';
 import YourProfile from './Components/Profile.jsx/YourProfile';
 import UpdateProfile from './Components/Profile.jsx/UpdateProfile';
+import Profile from './Components/Community/Profile';
+import NotLoggedIn from './Components/Home/NotLoggedIn';
 
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
             <Route path='/community' element={<Community/>} />
             <Route path='/profile' element={<YourProfile/>} />
             <Route path='/update' element={<UpdateProfile/>} />
+            <Route path='/user' element={<Profile/>} />
           </Routes>
         </BrowserRouter>
         <ParentContext />

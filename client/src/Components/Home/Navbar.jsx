@@ -119,7 +119,7 @@ export default function Navbar({ tab }) {
                     <Text >CLICK</Text>
                     <Text color='#7241FF'>CRAFT</Text>
                 </Flex>
-                <HStack spacing={8} alignItems="center">
+                <HStack spacing={8} alignItems="center"  ml={10}>
                     <HStack as="nav" spacing={6} d={{ base: 'none', md: 'flex' }} alignItems="center">
                         {navLinks.map((link, index) => (
                             <NavLink key={index} {...link} onClose={onClose} status={link.status} />
@@ -220,13 +220,12 @@ const NavLink = ({ name, path, onClose, status }) => {
                 _hover={{
                     textDecoration: 'none',
                     color: "#865BFF",
-                    transform: 'scale(1.05)',
-                    fontWeight: "700",
-                    transition: "color 0.3s ease"
+                    fontWeight:"700",
+                    transition: "color 0.3s smooth"
                 }}
                 onClick={() => onClose()}
                 color={status ? "#865BFF" : "#77798F"}
-                fontWeight={status ? "700" : "400"}
+                fontWeight={status ? "700" : "500"}
                 fontSize={"1.2em"}
             >
 
