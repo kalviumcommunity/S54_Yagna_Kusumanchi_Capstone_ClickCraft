@@ -21,7 +21,7 @@ connectMongoDB().then(()=>{
 })
 
 app.get('/', (req, res) => {
-    res.send("Welcome")
+    res.send("Welcome to Click Craft")
 })
 
 app.get("/last", (req, res)=>{

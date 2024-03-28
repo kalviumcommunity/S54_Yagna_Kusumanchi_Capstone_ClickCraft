@@ -8,7 +8,6 @@ import {
     Stack,
     IconButton,
     useDisclosure,
-    useColorModeValue,
     Avatar
 } from '@chakra-ui/react'
 
@@ -98,10 +97,10 @@ export default function Navbar({ tab }) {
     }
     const fetchTemplates = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/templates/all')
+            const response = await axios.get('https://c-craft-server.vercel.app/templates/all')
             setTemplates(response.data)
         } catch (error) {
-            console.error('Error fetching all users:', error.message)
+            console.error('Error fetching all templates:', error.message)
         }
     }
 
