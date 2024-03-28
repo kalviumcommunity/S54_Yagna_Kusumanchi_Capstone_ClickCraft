@@ -147,23 +147,23 @@ export default function UpdateProfile() {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='programmingLanguages'>Programming Languages</FormLabel>
-                                <Input id='programmingLanguages' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.programmingLanguages?.join(",")} {...register('programmingLanguages')} />
+                                <Input id='programmingLanguages' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.programmingLanguages} {...register('programmingLanguages')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='fieldOfInterest'>field Of Interest</FormLabel>
-                                <Input id='fieldOfInterest' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.fieldOfInterest?.join(",")} {...register('fieldOfInterest')} />
+                                <Input id='fieldOfInterest' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.fieldOfInterest} {...register('fieldOfInterest')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='passion'>passion</FormLabel>
-                                <Input id='passion' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.passion?.join(",")} {...register('passion')} />
+                                <Input id='passion' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.passion} {...register('passion')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='jobTitles'>jobTitles</FormLabel>
-                                <Input id='jobTitles' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.jobTitles?.join(",")} {...register('jobTitles')} />
+                                <Input id='jobTitles' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.jobTitles} {...register('jobTitles')} />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='currPosition'>Your Current Position</FormLabel>

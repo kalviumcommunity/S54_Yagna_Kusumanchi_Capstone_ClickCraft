@@ -15,7 +15,7 @@ const Profile = () => {
             try {
                 const queryParams = new URLSearchParams(window.location.search);
                 const id = queryParams.get('id');
-                const response = await axios.get(`http://localhost:3001/user/${id}`)
+                const response = await axios.get(`https://c-craft-server.vercel.app/user/${id}`)
                 if (isMounted && response.data) {
                     setData(response.data);
                 }
