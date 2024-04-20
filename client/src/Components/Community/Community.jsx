@@ -14,7 +14,8 @@ const Community = () => {
             <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" mx="auto" my={10} gap={10}>
                 {
                     users.map((user, i)=>{
-                        return <UserCard user={user}/>
+                        if(user.profile.shortBio)
+                        return <UserCard user={user} key={i}/>
                     })
                 }
             </Box>

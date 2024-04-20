@@ -48,7 +48,7 @@ export default function UpdateProfile() {
         return new Promise((resolve) => {
             setTimeout(async () => {
                 try {
-                    const response = await axios.put('http://localhost:3001/user/updateprofile', {
+                    const response = await axios.put('https://c-craft-server.vercel.app/user/updateprofile', {
                         email: user.email,
                         name: data.name,
                         profile: {
@@ -58,14 +58,13 @@ export default function UpdateProfile() {
                             location: data.location,
                             education: data.education,
                             educationInstitution: data.educationInstitution,
-                            activities: data.activities,
                             quote: data.quote,
                             githubUserName: data.githubUserName,
                             programmingLanguages: data.programmingLanguages.split(','),
-                            fieldOfInterest: data.fieldOfInterest.split(','),
-                            passion: data.passion.split(','),
                             jobTitles: data.jobTitles.split(','),
                             currPosition: data.currPosition,
+                            about:data.about,
+                            shortBio:data.shortBio,
                             socialLinks: {
                                 github: data.github,
                                 twitter: data.twitter,
@@ -129,14 +128,28 @@ export default function UpdateProfile() {
                             </FormControl>
                         </Stack>
 
-                        <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }}>
+                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
-                                <FormLabel htmlFor='activities'>Hobbies</FormLabel>
-                                <Input id='activities' placeholder='Hobbies' defaultValue={userProfile?.profile?.activities} {...register('activities')} />
+                                <FormLabel htmlFor='shortBio'>Short Bio</FormLabel>
+                                <Textarea id='shortBio' placeholder='Enter a Short bio' defaultValue={userProfile?.profile?.shortBio} {...register('shortBio')} />
                             </FormControl>
+                        </Stack>
+
+                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
+                            <FormControl>
+                                <FormLabel htmlFor='about'>About You</FormLabel>
+                                <Textarea id='about' placeholder='Tell about Yourself' defaultValue={userProfile?.profile?.about} {...register('about')} size={"auto"}/>
+                            </FormControl>
+                        </Stack>
+
+                        <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='quote'>Quote</FormLabel>
                                 <Input id='quote' placeholder='Quote' defaultValue={userProfile?.profile?.quote} {...register('quote')} />
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel htmlFor='fav'>Favicon</FormLabel>
+                                <Input id='favicon' placeholder='Paste Your website icon link' defaultValue={userProfile?.profile?.favicon} {...register('favicon')} />
                             </FormControl>
                         </Stack>
 
@@ -148,16 +161,6 @@ export default function UpdateProfile() {
                             <FormControl>
                                 <FormLabel htmlFor='programmingLanguages'>Programming Languages</FormLabel>
                                 <Input id='programmingLanguages' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.programmingLanguages} {...register('programmingLanguages')} />
-                            </FormControl>
-                        </Stack>
-                        <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >
-                            <FormControl>
-                                <FormLabel htmlFor='fieldOfInterest'>field Of Interest</FormLabel>
-                                <Input id='fieldOfInterest' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.fieldOfInterest} {...register('fieldOfInterest')} />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel htmlFor='passion'>passion</FormLabel>
-                                <Input id='passion' placeholder='Enter with comma separated' defaultValue={userProfile?.profile?.passion} {...register('passion')} />
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={10} columnGap={20} direction={{ base: 'column', md: 'row' }} >

@@ -24,10 +24,6 @@ app.get('/', (req, res) => {
     res.send("Welcome to Click Craft")
 })
 
-app.get("/last", (req, res)=>{
-    res.send("Added Templates")
-})
-
 const UserRouter = require("./routes/User")
 app.use('/user', UserRouter);
 const TemplatesRouter = require("./routes/Template")
