@@ -89,21 +89,25 @@ const getAllUsers = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    const userId = req.params.id
+    const userId = req.params.id;
 
     try {
-        const data = await Users.findOne({UserId: userId })
+        const data = await Users.findOne({ UserId: userId });
 
         if (!data) {
-            return res.status(404).json({ message: 'User not found' })
+            return res.status(404).json({ message: 'User not found' });
         }
 
-        res.status(200).json(data)
+        data.views = data.views ? data.views + 1 : 1;
+        await data.save();
+
+        res.status(200).json(data);
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ err: 'Internal Server Error' })
+        console.error(err);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-}
+};
+
 
 const getUserByEmail = async (req, res) => {
     const userEmail = req.query.email
@@ -149,8 +153,8 @@ const updateUserProfile = async (req, res) => {
             lastName = ''
         }
         existingUser.FirstName = capitalize(firstName),
-        existingUser.LastName = capitalize(lastName),
-        existingUser.name = name
+            existingUser.LastName = capitalize(lastName),
+            existingUser.name = name
         existingUser.profile = profile
         await existingUser.save()
 
@@ -168,5 +172,94 @@ const updateUserProfile = async (req, res) => {
     }
 }
 
+const LikeUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedUser = await Users.findByIdAndUpdate(userId, { $inc: { likes: 1 } }, { new: true });
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user like:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
-module.exports = { createUser, getAllUsers, getUser, getUserByEmail, updatePortfolios, updateUserProfile }
+const unLikeUser = async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const user = await Users.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.likes > 0) {
+            user.likes -= 1;
+        }
+
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error un liking user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+const likePortfolio = async (req, res) => {
+    const userId = req.params.id;
+    const portfolioView = req.query.view;
+
+    try {
+        const user = await Users.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const portfolioIndex = user.portfolios.findIndex(portfolio => portfolio.View === portfolioView);
+
+        if (portfolioIndex === -1) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        user.portfolios[portfolioIndex].Likes += 1;
+
+        await user.save();
+
+        res.status(200).json(user.portfolios[portfolioIndex]);
+    } catch (error) {
+        console.error('Error liking portfolio:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+const unlikePortfolio = async (req, res) => {
+    const userId = req.params.id;
+    const portfolioView = req.query.view;
+
+    try {
+        const user = await Users.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const portfolioIndex = user.portfolios.findIndex(portfolio => portfolio.View === portfolioView);
+
+        if (portfolioIndex === -1) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        user.portfolios[portfolioIndex].Likes -= 1;
+
+        await user.save();
+
+        res.status(200).json(user.portfolios[portfolioIndex]);
+    } catch (error) {
+        console.error('Error un liking portfolio:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+
+module.exports = { createUser, getAllUsers, getUser, getUserByEmail, updatePortfolios, updateUserProfile, LikeUser, unLikeUser, likePortfolio, unlikePortfolio }

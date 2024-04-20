@@ -4,6 +4,8 @@ import Yagna from "../../Assets/Yagna.jpg"
 import PortfolioCard from '../Portfolios/PortfolioCard'
 import { AppContext } from '../../context/ParentContext'
 import YourPortfolios from './YourPortfolios'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const YourProfileMain = () => {
   const BoxStyle = {
@@ -14,7 +16,8 @@ const YourProfileMain = () => {
     borderRadius: "20"
   }
 
-  const {userProfile, setUserProfile} = useContext(AppContext)
+  const { userProfile, setUserProfile } = useContext(AppContext)
+  const navigate = useNavigate()
 
   return (
     <Box bg="#010310" mt="150px" color="white">
@@ -26,7 +29,9 @@ const YourProfileMain = () => {
             filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
             transition: "background-color 0.3s ease",
           }}
-          _hover={{ bg: "#7241FF" }}>
+          _hover={{ bg: "#7241FF" }}
+          onClick={()=>navigate('/update')}
+          >
           Edit Profile
         </Button>
         <Box display="flex" justifyContent="center" alignItems="center" textAlign="center">
@@ -46,8 +51,8 @@ const YourProfileMain = () => {
           <Text fontWeight="medium" fontSize="24">My Portfolios</Text>
           <Box display="flex" justifyContent="left" alignItems="center" gap={10} columnGap={20} flexWrap="wrap" mx="auto" my={10}>
             {
-              userProfile?.portfolios?.map((Data, i)=>{
-                return <YourPortfolios Data={Data} key={i}/>
+              userProfile?.portfolios?.map((Data, i) => {
+                return <YourPortfolios Data={Data} key={i} user={userProfile} />
               })
             }
           </Box>

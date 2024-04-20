@@ -61,17 +61,17 @@ const PortfolioCard = ({ Data }) => {
     const AddPortfolio = async () => {
         try {
             if (userProfile) {
-                const existingPortfolio = userProfile.portfolios.find(portfolio => portfolio.View == `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`);
+                const existingPortfolio = userProfile.portfolios.find(portfolio => portfolio.View == `${Data.Link}?id=${userProfile.UserId}`);
                 if (existingPortfolio) {
                     console.log('Portfolio already exists');
                     return
                 }
             }
 
-            const response = await axios.put('http://localhost:3001/user/update', {
+            const response = await axios.put('https://c-craft-server.vercel.app/user/update', {
                 email: userProfile.email,
                 portfolio: {
-                    View: `${Data.Link}?name=${userProfile.FirstName}&id=${userProfile.UserId}`,
+                    View: `${Data.Link}?id=${userProfile.UserId}`,
                     Image: Data.Image,
                     Likes: 0,
                     Views: 0

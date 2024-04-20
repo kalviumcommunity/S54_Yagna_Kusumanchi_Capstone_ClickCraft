@@ -2,9 +2,14 @@ import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react'
 import star from "../../Assets/star.png"
 import play from "../../Assets/Play.png"
 
-import React from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from '../../context/ParentContext'
+import { useNavigate } from 'react-router-dom'
 
 const HeroContent = () => {
+    const {isAuthenticated, loginWithRedirect} = useContext(AppContext)
+
+    const navigate = useNavigate()
     return (
         <Box bg={"#010314"} display="flex" flexDirection="column" justifyContent="center" alignItems="center" color="white">
             <Flex mt={50} gap={2} alignItems={"center"}>
@@ -28,7 +33,7 @@ const HeroContent = () => {
                     d={{ base: 'none', md: 'block' }}
                     px={8}
                     py={5}
-                    onClick={() => loginWithRedirect()}
+                    onClick={isAuthenticated?()=>navigate("/portfolios"):()=>loginWithRedirect()}
                 >
                     Get started for free
                 </Button>
