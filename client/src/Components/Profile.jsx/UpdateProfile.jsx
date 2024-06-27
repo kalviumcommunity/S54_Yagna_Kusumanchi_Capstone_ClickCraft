@@ -16,13 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/ParentContext";
 import Navbar from "../Home/Navbar";
 import Footer from "../Home/Footer";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { AdvancedImage } from "@cloudinary/react";
-import { auto } from "@cloudinary/url-gen/actions/resize";
-import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
-
-const cloudName = "dyobwlkps";
-const uploadPreset = "sknrvfx1";
 
 const UpdateProfile = () => {
   const {
@@ -33,11 +26,10 @@ const UpdateProfile = () => {
 
   const { user, setUserProfile, userProfile, isAuthenticated } =
     useContext(AppContext);
+
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(
-    userProfile?.profile?.profilePicture
-  );
+  const [profilePicture, setProfilePicture] = useState(userProfile?.picture);
 
   if (!isAuthenticated) {
     return <div>Please Register Your Account or Login to your account</div>;
@@ -45,28 +37,28 @@ const UpdateProfile = () => {
 
   const onSubmit = async (data) => {
     try {
-      let profilePictureUrl = profilePicture;
-
       if (selectedFile) {
         const formData = new FormData();
         formData.append("file", selectedFile);
-        formData.append("upload_preset", uploadPreset);
+        formData.append("upload_preset", "demo-app");
+        formData.append("cloud_name", "dyobwlkps");
 
         const cloudinaryResponse = await axios.post(
-          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          `https://api.cloudinary.com/v1_1/dyobwlkps/image/upload`,
           formData
         );
 
-        profilePictureUrl = cloudinaryResponse.data.secure_url;
+        var profilePictureUrl = cloudinaryResponse.data.secure_url;
+        setProfilePicture(profilePictureUrl);
       }
 
       const response = await axios.put(
-        "https://c-craft-server.vercel.app/user/updateprofile",
+        "http://localhost:3001/user/updateprofile",
         {
           email: user.email,
           name: data.name,
+          picture: profilePictureUrl,
           profile: {
-            profilePicture: profilePictureUrl,
             name: data.name,
             firstName: data.name.split(" ")[0],
             lastName: data.name.split(" ")[1],
@@ -99,7 +91,6 @@ const UpdateProfile = () => {
         }
       );
 
-      console.log(response.data);
       setUserProfile(response.data);
       navigate("/profile");
     } catch (error) {
@@ -110,14 +101,11 @@ const UpdateProfile = () => {
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
+    if (event.target.files[0]) {
+      const imageUrl = URL.createObjectURL(event.target.files[0]);
+      setProfilePicture(imageUrl);
+    }
   };
-
-  const cld = new Cloudinary({ cloud: { cloudName: cloudName } });
-  const img = cld
-    .image("cld-sample-5")
-    .format("auto")
-    .quality("auto")
-    .resize(auto().gravity(autoGravity()).width(500).height(500));
 
   return (
     <Box bg="#010314" color="white">
@@ -141,21 +129,7 @@ const UpdateProfile = () => {
               <FormControl>
                 <FormLabel htmlFor="profilePicture">Profile Picture</FormLabel>
                 <Box display="flex" alignItems="center">
-                  {profilePicture ? (
-                    <AdvancedImage
-                      cldImg={cld.image(profilePicture)}
-                      width={150}
-                      height={150}
-                    />
-                  ) : (
-                    <Image
-                      borderRadius="full"
-                      boxSize="150px"
-                      src={profilePicture}
-                      alt="Profile Picture"
-                      mr={4}
-                    />
-                  )}
+                  <Image src={profilePicture} width={200} h={200} />
                   <Input
                     type="file"
                     accept="image/*"

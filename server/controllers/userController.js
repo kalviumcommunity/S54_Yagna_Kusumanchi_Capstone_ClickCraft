@@ -131,7 +131,7 @@ const updatePortfolios = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
   try {
-    const { email, profile, name } = req.body;
+    const { email, profile, name, picture } = req.body;
 
     const existingUser = await Users.findOne({ email });
 
@@ -146,14 +146,14 @@ const updateUserProfile = async (req, res) => {
 
     existingUser.FirstName = capitalize(firstName);
     existingUser.LastName = capitalize(lastName);
-    existingUser.name = name;
+    existingUser.name = name || existingUser.name;
     existingUser.profile = {
       ...existingUser.profile,
       ...profile,
     };
 
-    if (profile.profilePicture) {
-      existingUser.profile.profilePicture = profile.profilePicture;
+    if (existingUser.picture) {
+      existingUser.picture = picture;
     }
 
     await existingUser.save();
