@@ -127,9 +127,16 @@ const UpdateProfile = () => {
               direction={{ base: "column", md: "row" }}
             >
               <FormControl>
-                <FormLabel htmlFor="profilePicture">Profile Picture</FormLabel>
+                <FormLabel htmlFor="profilePicture" pb={"20px"}>
+                  Profile Picture
+                </FormLabel>
                 <Box display="flex" alignItems="center">
-                  <Image src={profilePicture} width={200} h={200} />
+                  <Image
+                    src={profilePicture}
+                    width={300}
+                    h={250}
+                    rounded={"100%"}
+                  />
                   <Input
                     type="file"
                     accept="image/*"
