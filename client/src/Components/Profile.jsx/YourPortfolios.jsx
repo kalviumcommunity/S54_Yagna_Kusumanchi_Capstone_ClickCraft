@@ -44,10 +44,10 @@ const YourPortfolios = ({ Data,user }) => {
     const handlePortfolioLike = async () => {
         try {
             if (isLiked) {
-                await axios.put(`http://localhost:3001/user/portfolio/${user._id}/unlike?view=${Data.View}`);
+                await axios.put(`https://c-craft-server.vercel.app/user/portfolio/${user._id}/unlike?view=${Data.View}`);
                 setLikesCount(likesCount - 1);
             } else {
-                await axios.put(`http://localhost:3001/user/portfolio/${user._id}/like?view=${Data.View}`);
+                await axios.put(`https://c-craft-server.vercel.app/user/portfolio/${user._id}/like?view=${Data.View}`);
                 setLikesCount(likesCount + 1);
             }
     
