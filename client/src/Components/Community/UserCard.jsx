@@ -58,6 +58,7 @@ const UserCard = ({ user }) => {
             color="white"
             alignItems={"center"}
         >
+            
             <Stack
                 maxW="345px"
                 boxShadow="lg"
@@ -66,26 +67,34 @@ const UserCard = ({ user }) => {
                 p={6}
                 pb={3}
                 pos="relative"
-                bg={"#010310"}
+                bg={"#010320"}
                 mr={5}
-                _after={{
-                    content: `""`,
-                    w: '0',
-                    h: '0',
-                    borderColor: `transparent #664DFF transparent`,
-                    borderStyle: 'solid',
-                    borderWidth: '20px 0 20px 20px',
-                    position: 'absolute',
-                    top: { base: 'unset', sm: '45%' },
-                    right: { base: 'unset', sm: '-25px' },
-                    left: { base: '48%', sm: 'unset' },
-                    bottom: { base: '-15px', sm: 'unset' },
-                    transform: { base: 'rotate(90deg)', sm: 'unset' },
-                    display: 'block'
-                }}
             >
+                <Stack
+                direction="column"
+                spacing={2}
+                p={2}
+                justifyContent="flex-end"
+                alignItems="center"
+                as={Link}
+                to={`/user/?id=${user.UserId}`}
+                cursor={'pointer'}
+            >
+                <Avatar
+                    size="lg"
+                    showBorder={true}
+                    borderColor="#664DFF"
+                    name="avatar"
+                    src={user.picture}
+                />
+                <Box textAlign="center">
+                    <Text fontWeight="600" fontSize="md">
+                        {user.name}
+                    </Text>
+                </Box>
+            </Stack>
                 <Text fontWeight="400" fontSize="16px" color="#77798F">
-                    {user.profile.shortBio}
+                    {user.profile.shortBio.length>20?user.profile.shortBio.slice(0,75) + "...":user.profile.shortBio}
                 </Text>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Text>Portfolios: <span style={{ fontWeight: "bold" }}>{user.portfolios.length}</span></Text>
@@ -106,29 +115,6 @@ const UserCard = ({ user }) => {
                         </Box>
                     </Box>
 
-                </Box>
-            </Stack>
-            <Stack
-                direction="column"
-                spacing={2}
-                p={2}
-                justifyContent="flex-end"
-                alignItems="center"
-                as={Link}
-                to={`/user/?id=${user.UserId}`}
-                cursor={'pointer'}
-            >
-                <Avatar
-                    size="lg"
-                    showBorder={true}
-                    borderColor="#664DFF"
-                    name="avatar"
-                    src={user.picture}
-                />
-                <Box textAlign="center">
-                    <Text fontWeight="600" fontSize="md" w={"120px"}>
-                        {user.name}
-                    </Text>
                 </Box>
             </Stack>
         </Stack>

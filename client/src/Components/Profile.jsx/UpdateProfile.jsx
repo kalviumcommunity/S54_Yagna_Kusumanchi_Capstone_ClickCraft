@@ -16,6 +16,7 @@ import Footer from '../Home/Footer'
 import { useContext } from 'react'
 import { AppContext } from '../../context/ParentContext'
 import axios from 'axios'
+import validator from 'validator';
 
 import { Navigate, useNavigate } from "react-router-dom";
 
@@ -27,27 +28,51 @@ import { Navigate, useNavigate } from "react-router-dom";
 //     return
 // }
 
+
 export default function UpdateProfile() {
     const {
         handleSubmit,
         register,
         formState: { isSubmitting },
+        formState: { errors }
     } = useForm()
 
-    const { user, setUserProfile, userProfile, isAuthenticated } = useContext(AppContext)
+    const { user, setUserProfile, userProfile, isAuthenticated, loginWithRedirect } = useContext(AppContext)
     const navigate = useNavigate();
+
+
     if (!isAuthenticated) {
 
         return (
             <div>
-                Please Register Your Account or Login to your account
-            </div>)
+                <p>
+                    Please Register Your Account or Login to your account
+                </p>
+                <Button bg="#010314"
+                    size="md"
+                    color="white"
+                    border="3px solid #2A2B3A"
+                    borderRadius="20px"
+                    _hover={{
+                        bg: "#7241FF", border: "3px solid #7241FF", filter: "drop-shadow(0 0 5px rgba(114, 65, 255, 1))",
+                        transition: "background-color 0.3s ease"
+                    }}
+                    d={{ base: 'none', md: 'block' }}
+                    px={8}
+                    onClick={() => loginWithRedirect()}
+                >
+                    Sign in
+                </Button>
+            </div>
+
+        )
     }
 
     function onSubmit(data) {
         return new Promise((resolve) => {
             setTimeout(async () => {
                 try {
+                    console.log(data)
                     const response = await axios.put('https://c-craft-server.vercel.app/user/updateprofile', {
                         email: user.email,
                         name: data.name,
@@ -63,8 +88,8 @@ export default function UpdateProfile() {
                             programmingLanguages: data.programmingLanguages.split(','),
                             jobTitles: data.jobTitles.split(','),
                             currPosition: data.currPosition,
-                            about:data.about,
-                            shortBio:data.shortBio,
+                            about: data.about,
+                            shortBio: data.shortBio,
                             socialLinks: {
                                 github: data.github,
                                 twitter: data.twitter,
@@ -82,7 +107,6 @@ export default function UpdateProfile() {
                             ]
                         }
                     });
-
                     console.log(response.data);
                     setUserProfile(response.data)
                     navigate("/profile");
@@ -138,7 +162,7 @@ export default function UpdateProfile() {
                         <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='about'>About You</FormLabel>
-                                <Textarea id='about' placeholder='Tell about Yourself' defaultValue={userProfile?.profile?.about} {...register('about')} size={"auto"}/>
+                                <Textarea id='about' placeholder='Tell about Yourself' defaultValue={userProfile?.profile?.about} {...register('about')} size={"auto"} />
                             </FormControl>
                         </Stack>
 
@@ -149,7 +173,19 @@ export default function UpdateProfile() {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='fav'>Favicon</FormLabel>
-                                <Input id='favicon' placeholder='Paste Your website icon link' defaultValue={userProfile?.profile?.favicon} {...register('favicon')} />
+                                <Input
+                                    id='favicon'
+                                    placeholder='Paste Your website icon link'
+                                    defaultValue={userProfile?.profile?.favicon}
+                                    {...register('favicon', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.favicon && <span style={{ color: 'red' }}>{errors.favicon.message}</span>}
                             </FormControl>
                         </Stack>
 
@@ -176,24 +212,72 @@ export default function UpdateProfile() {
 
                         <Text mt={10} fontSize={24} fontWeight={"medium"}>Social Media Links</Text>
 
-                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
+                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='github'>Git Hub</FormLabel>
-                                <Input id='github' placeholder='Git hub Profile Link' defaultValue={userProfile?.profile?.socialLinks?.github} {...register('github')} />
+                                <Input
+                                    id='github'
+                                    placeholder='Git hub Profile Link'
+                                    defaultValue={userProfile?.profile?.socialLinks?.github}
+                                    {...register('github', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.github && <span style={{ color: 'red' }}>{errors.github.message}</span>}
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='twitter'>Twitter</FormLabel>
-                                <Input id='twitter' placeholder='Twitter Link' defaultValue={userProfile?.profile?.socialLinks?.twitter} {...register('twitter')} />
+                                <Input
+                                    id='twitter'
+                                    placeholder='Twitter Link'
+                                    defaultValue={userProfile?.profile?.socialLinks?.twitter}
+                                    {...register('twitter', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.twitter && <span style={{ color: 'red' }}>{errors.twitter.message}</span>}
                             </FormControl>
                         </Stack>
-                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
+                        <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }}>
                             <FormControl>
                                 <FormLabel htmlFor='linkedin'>LinkedIn</FormLabel>
-                                <Input id='linkedin' placeholder='LinkedIn Profile Link' defaultValue={userProfile?.profile?.socialLinks?.linkedin} {...register('linkedin')} />
+                                <Input
+                                    id='linkedin'
+                                    placeholder='LinkedIn Profile Link'
+                                    defaultValue={userProfile?.profile?.socialLinks?.linkedin}
+                                    {...register('linkedin', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.linkedin && <span style={{ color: 'red' }}>{errors.linkedin.message}</span>}
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='instagram'>Instagram</FormLabel>
-                                <Input id='instagram' placeholder='Instagram Profile Link' defaultValue={userProfile?.profile?.socialLinks?.instagram} {...register('instagram')} />
+                                <Input
+                                    id='instagram'
+                                    placeholder='Instagram Profile Link'
+                                    defaultValue={userProfile?.profile?.socialLinks?.instagram}
+                                    {...register('instagram', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.instagram && <span style={{ color: 'red' }}>{errors.instagram.message}</span>}
                             </FormControl>
                         </Stack>
 
@@ -206,7 +290,19 @@ export default function UpdateProfile() {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='imgLink'>Image Link</FormLabel>
-                                <Input id='imgLink' placeholder='Paste Your Project Preview Image Link' {...register('imgLink')} />
+                                <Input
+                                    id='imgLink'
+                                    placeholder='Paste Your Project Preview Image Link'
+                                    {...register('imgLink', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.imgLink && <span style={{ color: 'red' }}>{errors.imgLink.message}</span>}
+
                             </FormControl>
                         </Stack>
                         <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
@@ -219,11 +315,34 @@ export default function UpdateProfile() {
                         <Stack w="100%" spacing={3} mt={5} columnGap={20} direction={{ base: 'column', md: 'row' }} >
                             <FormControl>
                                 <FormLabel htmlFor='ghLink'>Github Link</FormLabel>
-                                <Input id='ghLink' placeholder='Paste Your Github Project Link' {...register('ghLink')} />
+                                <Input
+                                    id='ghLink'
+                                    placeholder='Paste Your Github Project Link'
+                                    {...register('ghLink', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }
+                                    })}
+                                />
+                                {errors.ghLink && <span style={{ color: 'red' }}>{errors.ghLink.message}</span>}
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='demoLink'>Deployed Link</FormLabel>
-                                <Input id='demoLink' placeholder='Paste Your Deployed Link' {...register('demoLink')} />
+                                <Input
+                                    id='demoLink'
+                                    placeholder='Paste Your Deployed Link'
+                                    {...register('demoLink', {
+                                        validate: value => {
+                                            if (value.trim() === '') {
+                                                return true; // Allow empty string
+                                            }
+                                            return validator.isURL(value) || "Invalid URL";
+                                        }                                    })}
+                                />
+                                {errors.demoLink && <span style={{ color: 'red' }}>{errors.demoLink.message}</span>}
                             </FormControl>
                         </Stack>
 

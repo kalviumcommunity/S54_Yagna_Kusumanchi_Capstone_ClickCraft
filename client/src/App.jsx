@@ -9,6 +9,7 @@ import YourProfile from './Components/Profile.jsx/YourProfile';
 import UpdateProfile from './Components/Profile.jsx/UpdateProfile';
 import Profile from './Components/Community/Profile';
 import Lenis from '@studio-freight/lenis'
+import NotLoggedIn from './Components/Home/NotLoggedIn';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
             <Route path='/profile' element={<YourProfile />} />
             <Route path='/update' element={<UpdateProfile />} />
             <Route path='/user' element={<Profile />} />
+            <Route path='/login' element={<NotLoggedIn />} />
           </Routes>
         </BrowserRouter>
         <ParentContext />
