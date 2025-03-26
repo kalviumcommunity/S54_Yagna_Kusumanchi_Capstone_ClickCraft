@@ -11,10 +11,11 @@ const Community = () => {
         <Box bg="#010310">
             <Navbar tab={"Community"} />
             <Heading size="xl" textAlign="center" bgGradient='radial(#FFFFFF,#FFFFFF, rgba(255,255,255,0.7), rgba(255,255,255,0.7))' bgClip='text' mt={10}>Community</Heading>
-            <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" mx="auto" my={10} gap={10}>
+            <Box display="flex" justifyContent="start" alignItems="center" flexWrap="wrap" mx="auto" my={10} gap={10} w={"80%"}>
                 {
                     users.map((user, i)=>{
-                        if(user.profile.shortBio)
+                        if(user.profile.shortBio && user.profile.shortBio.length>20)
+
                         return <UserCard user={user} key={i}/>
                     })
                 }

@@ -104,6 +104,56 @@ const UpdateProfile = () => {
     if (event.target.files[0]) {
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       setProfilePicture(imageUrl);
+    function onSubmit(data) {
+        return new Promise((resolve) => {
+            setTimeout(async () => {
+                try {
+                    console.log(data)
+                    const response = await axios.put('https://c-craft-server.vercel.app/user/updateprofile', {
+                        email: user.email,
+                        name: data.name,
+                        profile: {
+                            name: data.name,
+                            firstName: data.name.split(' ')[0],
+                            lastName: data.name.split(' ')[1],
+                            location: data.location,
+                            education: data.education,
+                            educationInstitution: data.educationInstitution,
+                            quote: data.quote,
+                            githubUserName: data.githubUserName,
+                            programmingLanguages: data.programmingLanguages.split(','),
+                            jobTitles: data.jobTitles.split(','),
+                            currPosition: data.currPosition,
+                            about: data.about,
+                            shortBio: data.shortBio,
+                            socialLinks: {
+                                github: data.github,
+                                twitter: data.twitter,
+                                linkedin: data.linkedin,
+                                instagram: data.instagram
+                            },
+                            projects: [
+                                {
+                                    title: data.title,
+                                    imgLink: data.imgLink,
+                                    description: data.description,
+                                    ghLink: data.ghLink,
+                                    demoLink: data.demoLink
+                                }
+                            ]
+                        }
+                    });
+                    console.log(response.data);
+                    setUserProfile(response.data)
+                    navigate("/profile");
+
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    alert('Failed to update profile!');
+                }
+                resolve()
+            }, 3000)
+        })
     }
   };
 

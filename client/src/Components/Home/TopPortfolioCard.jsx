@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const TopPortfolioCard = ({ Data }) => {
-    const { userProfile, setUserProfile } = useContext(AppContext)
+    const { userProfile, setUserProfile, isAuthenticated } = useContext(AppContext)
 
     const navigate = useNavigate();
 
@@ -21,10 +21,13 @@ const TopPortfolioCard = ({ Data }) => {
 
     const AddPortfolio = async () => {
         try {
+            if(!isAuthenticated){
+                navigate('/login')
+                return
+            }
             if (userProfile) {
                 const existingPortfolio = userProfile.portfolios.find(portfolio => portfolio.View == `${Data.Link}?id=${userProfile.UserId}`);
                 if (existingPortfolio) {
-                    console.log('Portfolio already exists');
                     navigate('/update')
                     return
                 }
@@ -40,7 +43,6 @@ const TopPortfolioCard = ({ Data }) => {
                 }
             })
             setUserProfile(response.data.user)
-            console.log('Portfolio added successfully:', response.data);
             navigate('/update')
         } catch (error) {
             console.error('Error updating portfolio:', error);
